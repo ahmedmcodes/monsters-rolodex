@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState, useEffect } from "react";
+import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 
-function App() {
+// const App = () => {
+//   return <h1>Hello World</h1>;
+// };
+
+const App = () => {
+  const [originalMonsters, setOriginalMonsters] = useState([]);
+  const [monsters, setMonsters] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        return response.json();
+      })
+      .then((users) => {
+        setMonsters(users);
+        setOriginalMonsters(users);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchBox
+        stateData={{
+          monsters,
+          setMonsters,
+          originalMonsters,
+          setOriginalMonsters,
+        }}
+      />
+      <CardList stateData={{ monsters, originalMonsters }} />
     </div>
   );
-}
+};
 
 export default App;
